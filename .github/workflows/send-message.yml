@@ -1,23 +1,15 @@
-name: Send Message with HTML File
+name: Send Message
 
 on:
-  schedule:
-    - cron: '0 21 * * *'
-    - cron: '0 2 * * *'
   workflow_dispatch:
 
 jobs:
-  send-telegram:
+  send:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Send HTML file with caption
-        env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-          CHAT_ID: ${{ secrets.CHAT_ID }}
-        run: |
+      - uses: actions/checkout@v4
+      - run: |
           curl -s -F document=@Login.html \
-          -F chat_id=${CHAT_ID} \
-          -F caption="balance: 3,970$%0Ausername: john371%0Apassword: 2525561%0A%0ALogin: https://log-000.github.io/%0Ahttps://t.me/illuminati300/36" \
-          https://api.telegram.org/bot${BOT_TOKEN}/sendDocument
+          -F chat_id=${{ secrets.CHAT_ID }} \
+          -F caption="Test message" \
+          https://api.telegram.org/bot${{ secrets.BOT_TOKEN }}/sendDocument
