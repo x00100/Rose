@@ -1,6 +1,5 @@
 name: Send Message
 
-
 on:
   workflow_dispatch:
 
