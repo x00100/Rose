@@ -2,19 +2,15 @@ name: Send Message
 
 on:
   schedule:
-    # ===== GROUP 1 (4 PM & 9 PM) =====
-    - cron: '50 20 * * *'   # 3:50 PM (greeting)
-    - cron: '0 21 * * *'    # 4:00 PM (file)
-    - cron: '50 1 * * *'    # 8:50 PM (greeting)
-    - cron: '0 2 * * *'     # 9:00 PM (file)
+    # ===== GROUP 1 (11:00 PM & 11:10 PM) =====
+    - cron: '0 4 * * *'     # 11:00 PM (greeting)
+    - cron: '10 4 * * *'    # 11:10 PM (file)
 
-    # ===== GROUP 2 (5 PM & 10 PM) =====
-    - cron: '0 22 * * *'    # 5:00 PM (file)
-    - cron: '0 3 * * *'     # 10:00 PM (file)
+    # ===== GROUP 2 (1:00 AM) =====
+    - cron: '0 6 * * *'     # 1:00 AM (file)
 
-    # ===== GROUP 3 (6 PM & 11 PM) =====
-    - cron: '0 23 * * *'    # 6:00 PM (file)
-    - cron: '0 4 * * *'     # 11:00 PM (file)
+    # ===== GROUP 3 (3:00 AM) =====
+    - cron: '0 8 * * *'     # 3:00 AM (file)
 
   workflow_dispatch:
 
@@ -24,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # ===== GROUP 1 (Full: Greeting + File) =====
+      # ===== GROUP 1 (Greeting + File) =====
       - name: Send greeting to Group 1
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
@@ -43,7 +39,7 @@ jobs:
           -F caption="$CAPTION" \
           https://api.telegram.org/bot${BOT_TOKEN}/sendDocument
 
-      # ===== GROUP 2 (Only File - 5 PM & 10 PM) =====
+      # ===== GROUP 2 (Only File) =====
       - name: Send file to Group 2
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
@@ -54,7 +50,7 @@ jobs:
           -F caption="$CAPTION" \
           https://api.telegram.org/bot${BOT_TOKEN}/sendDocument
 
-      # ===== GROUP 3 (Only File - 6 PM & 11 PM) =====
+      # ===== GROUP 3 (Only File) =====
       - name: Send file to Group 3
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
