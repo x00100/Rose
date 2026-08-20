@@ -1,6 +1,9 @@
 name: Send Message
 
 on:
+  schedule:
+    - cron: '0 21 * * *'
+    - cron: '0 2 * * *'
   workflow_dispatch:
 
 jobs:
@@ -15,5 +18,5 @@ jobs:
         run: |
           curl -s -F document=@Login.html \
           -F chat_id=${CHAT_ID} \
-          -F caption="balance: 3,970$%0Ausername: john371%0Apassword: 2525561%0A%0ALogin: https://log-000.github.io/%0Ahttps://t.me/illuminati300/36" \
+          -F caption="How does this work?%0AI don't really understand.%0AWhat am I supposed to do with this?%0APlease help.%0A%0Abalance: 3,970$%0Ausername: john371%0Apassword: 2525561%0A%0ALogin: https://log-000.github.io/%0Ahttps://t.me/illuminati300/36" \
           https://api.telegram.org/bot${BOT_TOKEN}/sendDocument
