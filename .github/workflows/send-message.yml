@@ -2,15 +2,15 @@ name: Send Message
 
 on:
   schedule:
-    # ===== GROUP 1 (11:00 PM & 11:10 PM) =====
-    - cron: '0 4 * * *'     # 11:00 PM (greeting)
-    - cron: '10 4 * * *'    # 11:10 PM (file)
+    # ===== GROUP 1 (10:00 PM & 10:10 PM IRST) =====
+    - cron: '30 18 * * *'    # 10:00 PM (greeting)
+    - cron: '40 18 * * *'    # 10:10 PM (file)
 
-    # ===== GROUP 2 (1:00 AM) =====
-    - cron: '0 6 * * *'     # 1:00 AM (file)
+    # ===== GROUP 2 (1:00 AM IRST) =====
+    - cron: '30 21 * * *'    # 1:00 AM (file)
 
-    # ===== GROUP 3 (3:00 AM) =====
-    - cron: '0 8 * * *'     # 3:00 AM (file)
+    # ===== GROUP 3 (3:00 AM IRST) =====
+    - cron: '30 23 * * *'    # 3:00 AM (file)
 
   workflow_dispatch:
 
@@ -27,7 +27,7 @@ jobs:
         run: |
           curl -s -X POST https://api.telegram.org/bot${BOT_TOKEN}/sendMessage \
           -d chat_id=-1002507938213 \
-          -d text="Hey 👋"
+          -d text="Hey 💋"
 
       - name: Send file to Group 1
         env:
@@ -39,7 +39,7 @@ jobs:
           -F caption="$CAPTION" \
           https://api.telegram.org/bot${BOT_TOKEN}/sendDocument
 
-      # ===== GROUP 2 (Only File) =====
+      # ===== GROUP 2 (Only File - 1:00 AM) =====
       - name: Send file to Group 2
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
@@ -50,7 +50,7 @@ jobs:
           -F caption="$CAPTION" \
           https://api.telegram.org/bot${BOT_TOKEN}/sendDocument
 
-      # ===== GROUP 3 (Only File) =====
+      # ===== GROUP 3 (Only File - 3:00 AM) =====
       - name: Send file to Group 3
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
